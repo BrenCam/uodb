@@ -1,0 +1,15 @@
+{{left_sidebar_enabled=right_sidebar_enabled=False}}
+{{extend 'layout.html'}}
+
+<hr />
+<h1>{{=T("Welcome to the UODB database prototype")}}</h2>
+In this application you can:
+<ul>
+  <li>{{=A(T("List Patients"), _href=URL('default','index'))}} or {{=A(T("Register New Patient"), _href=URL('projects','create'))}}</li>
+  <li>{{=A(T("View Summary"), _href=URL('default','index'))}}
+  <li>{{=A(T("Generate Reports"), _href=URL('reports','index'))}}</li>
+</ul>
+
+<p/>
+<hr/>
+

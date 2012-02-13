@@ -1,0 +1,52 @@
+{{right_sidebar_enabled=True}}
+
+{{extend 'layout.html'}}
+<style>
+.green {background-color: #00FFFF; }
+.yellow {background-color: yellow; }
+.red {background-color: red; }
+
+table,th,td
+{
+border:1px solid black;
+}
+
+</style>
+
+{{block right_sidebar}}
+<h3>Pt Search</h3> 
+{{end}}
+
+<h3>Patient Summary Status</h3>
+
+<table>
+  <tr>
+    <th class='yellow'>PID</th>
+    <th class='yellow'>MRN</th>
+    <th class='yellow'>Name</th>
+    <th class='yellow'>Last PSA</th>
+    <th class='yellow'>PSA Stale</th>
+    <th class='yellow'>Last Follow Up</th>
+    <th class='yellow'>FU Stale</th>
+
+  </tr>
+
+  {{for item in dict.itervalues():}}
+  <tr>
+     <td class="{{='red' if item['id']<20 else 'green'}}">{{=item['id']}}</td>
+     <td>{{=item['mrn']}}</td>
+     <td>{{=item['lname']}}</td>
+     <td class="{{='red' if item['psastale'] else 'green'}}">{{=item['lastpsa'][0:10]}}</td>
+     <td>{{=item['psastale']}}</td>
+     <td class="{{='red' if item['fustale'] else 'green'}}">{{=item['lastfu']}}</td>
+     <td>{{=item['fustale']}}</td>
+     <td> <input type="checkbox" value=True checked="checked"></td>
+
+  </tr>
+  {{pass}}
+</table>
+
+
+
+
+

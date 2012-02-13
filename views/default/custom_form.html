@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+{{import datetime}}
+
+
+{{block main-content}}
+{{=form.custom.begin}}
+<table>
+    <tr>
+        <td>
+        mrn: <div>{{=form.custom.widget.mrn}}</div>            
+        </td>
+        <td>
+        eth: <div>{{=form.custom.widget.ethnicity}}</div>            
+        </td>
+    </tr>
+</table>
+{{=form.custom.end}}
+{{end}}

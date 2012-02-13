@@ -1,0 +1,107 @@
+{{extend 'layout.html'}}
+{{import datetime}}
+
+
+{{block main-content}}
+            <form accept-charset="UTF-8" action="" class="form" method="get" style="display:inline">
+                <span class='search'>
+                <input class='search_box' id='search' name='query' placeholder='Search for string in MRN, Name' type='text'>
+                <input class='search_submit' type='submit' value=''>
+                </span>
+                <div id='filters_box'></div>
+            </form>                      
+
+            <input id="bulk_action" name="bulk_action" type="hidden" />
+            <table class='table grid'>
+                <thead>
+                    <tr>
+
+                        <th class='other left' style='display: none'>...</th>
+
+                        {{for field in fields:}}
+                            {{vars = request.vars.copy()
+                              vars['sort'] = field
+                              vars['sort_reverse'] = 'false'
+                              vars.pop('page', None)
+
+                              if request.vars.sort == field:
+                                css_class = 'selected'
+                                if request.vars.get('sort_reverse') == 'false':
+                                    vars['sort_reverse'] = 'true'
+                                    css_class1 = 'ascending'
+                                else:
+                                    css_class1 = 'descending'
+                                pass
+                              else:
+                                css_class = ''
+                                css_class1 = ''
+                              pass
+                              url = URL(args=request.args, vars=vars)
+                            }}
+                            <th class="{{=css_class }}">
+                                <a class="{{=css_class1}}" href="{{=url}}">{{=field.upper()}}</a>
+                            </th>
+                        {{pass}}
+
+                        <th class='last'></th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {{for row in data:}}
+                       
+                        <tr class='odd link' data-link="{{=URL('show', args=(table, id))}}">
+
+                            <td class='other left' style='display: none'><a href="/admin/users?set=-1&amp;sort=id&amp;sort_reverse=false" data-remote="true">...</a></td>
+
+                            {{for field in fields:}}
+                                {{if table[field].type == 'boolean':}}
+                                    <td style="text-align: center;">
+                                    {{if row[field]:}}
+                                    <img src="{{=URL('static','images/icon-yes.png')}}" />
+                                    {{else:}}
+                                    <img src="{{=URL('static','images/icon-no.png')}}" />
+                                    {{pass}}
+                                    </td>
+                                {{elif table[field].name == 'date_of_birth':}}
+
+                                    <td> {{=row[field].strftime("%Y/%m/%d")}} </td>
+                                    
+                                {{else:}}
+                                    <td> {{=row[field]}} </td>
+                                {{pass}}
+                            {{pass}}
+
+                            <td class='last'>
+                            <a href="{{=URL('edit', args=(table, row['id']))}}"><img alt="Edit" src="{{=URL('static','images/show.png')}}" title="Edit" /></a>
+ 
+                            </td>
+                        </tr>
+                    {{pass}}
+                </tbody>                
+
+            </table>
+            
+            <div class='pagination'>
+                {{if len(pages) > 1:}}
+                    {{for page in pages:}}
+                        {{vars = request.vars.copy()
+                          vars['page'] = page
+                          url = URL(args=request.args, vars=vars)
+                        }}
+                        {{if page is None:}}
+                            <span>...</span>
+                        {{elif page == current_page:}}
+                            <span class="current">{{=page}}</span>
+                        {{else:}}
+                            <a href="{{=url}}">{{=page}}</a>
+                        {{pass}}
+                    {{pass}}
+                {{pass}}
+            </div> <!-- End of pagination -->
+
+            <div class='left' style='white-space: nowrap; padding-top:0.7em;'>
+                Total Patient Count: {{=number_of_items}}
+            </div>            
+            
+{{end}}

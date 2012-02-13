@@ -1,0 +1,20 @@
+{{extend 'layout.html'}}
+
+{{block main-content}}
+<div class='content'>
+    <div class='control'>
+    </div> <!-- End of control -->
+    <div class='inner'>
+        <div class='flash'>
+            {{if form.errors:}}
+                <div class='message error'>
+                    <p>{{=response.flash}}</p>
+                </div>
+            {{pass}}
+        </div>
+        
+        <h3>Register New Patient</h3>
+        {{=form}}
+    </div> <!-- End of inner -->
+</div> <!-- End of content -->
+{{end}}
