@@ -1,0 +1,27 @@
+{{extend 'layout.html'}}
+
+{{# customize form }}
+{{#=form}}
+
+{{=form.custom.begin}}
+
+<h3>CRUD Custom Edit </h3>
+<table>        
+    {{ # Write out recent patients (by dob) }}
+    <tr>
+        <th>Name</th>
+        <td><div>{{=form.custom.widget.mrn}}</div></td>
+        <th>MRN</th>
+        <td><div>{{=form.custom.widget.lname}}</td>
+    </tr>
+    <tr>
+        <th>DOB</th>
+        <td><div>{{=form.custom.widget.date_of_birth}}</td>
+        <th>Ethnicity</th>
+        <td><div>{{=form.custom.widget.ethnicity}}</td>        
+    </tr>
+        
+</table> 
+Submit: {{=form.custom.submit}}
+
+{{=form.custom.end}}

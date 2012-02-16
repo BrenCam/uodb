@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.KeyError'> 'dob'"
+p3
+sS'layer'
+p4
+S'/home/brencam/web2py/applications/uodb/controllers/ptcrud.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n\'\'\'\nCrud Controlled for web2py test application - use for handling patient related data\n\'\'\'\n#########################################################################\n## This is a crud patient controller\n## - index is the default action of any application\n## - user is required for authentication and authorization\n## - download is for downloading files uploaded in the db (does streaming)\n## - call exposes all registered services (none by default)\n#########################################################################\n\n\nif 0:\n    # for ide web2py support\n    # see: http://kollerie.wordpress.com/2009/04/07/setting-up-your-ide-for-web2py-development/    \n    from gluon.globals import *    \n    from gluon.html import *\n    from gluon.http import *\n    from gluon.tools import *\n    from gluon.sql import *\n    from gluon.validators import *\n    from gluon.languages import translator as T \n    from gluon.sqlhtml import SQLFORM, SQLTABLE, form_factory\n    \n    session = Session()\n    request = Request()\n    response = Response()\n    crud = Crud()\n    \nPATIENT_SHOW_COUNT = 5\n\ndef index():\n    response.files.append(URL(request.application, \'static/css\', \'index.css\'))\n    # Return the most recent X patients to display on the page.\n    # sort by desc dob\n    allPatients = db().select(db.patient.ALL, orderby =~ db.patient.dob)\n    recentPatients = allPatients[:PATIENT_SHOW_COUNT ]\n    return dict(patients = recentPatients)    \n\ndef edit_patient():\n    """ Allows for editing of the selected patient record. Post id passed as a query\n    parameter. \n    """\n    post_id = request.vars[\'patient\']\n    update_form = crud.update(db.posts, post_id, next=URL(\'index\'))\n    return dict(form=update_form)\n\ndef data():\n    """                                      \n    http://..../[app]/default/data/tables\n    http://..../[app]/default/data/create/[table]\n    http://..../[app]/default/data/read/[table]/[id]\n    http://..../[app]/default/data/update/[table]/[id]\n    http://..../[app]/default/data/delete/[table]/[id]\n    http://..../[app]/default/data/select/[table]\n    http://..../[app]/default/data/search/[table]\n    but URLs bust be signed, i.e. linked with\n      A(\'table\',_href=URL(\'data/tables\',user_signature=True))\n    or with the signed load operator\n      LOAD(\'default\',\'data.load\',args=\'tables\',ajax=True,user_signature=True)\n    """\n    return dict(form=crud())\n\ndef create_patient():\n    """ Write a pt rec. """\n    makePatient = crud.create(db.patient, next=URL(\'index\'))\n    return dict(form=makePatient)\nresponse._vars=response._caller(index)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/brencam/web2py/gluon/restricted.py", line 204, in restricted\n    exec ccode in environment\n  File "/home/brencam/web2py/applications/uodb/controllers/ptcrud.py", line 69, in <module>\n  File "/home/brencam/web2py/gluon/globals.py", line 172, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/brencam/web2py/applications/uodb/controllers/ptcrud.py", line 37, in index\n    allPatients = db().select(db.patient.ALL, orderby =~ db.patient.dob)\n  File "/home/brencam/web2py/gluon/dal.py", line 5542, in __getattr__\n    return self[key]\n  File "/home/brencam/web2py/gluon/dal.py", line 5482, in __getitem__\n    return dict.__getitem__(self, str(key))\nKeyError: \'dob\'\n'
+p11
+s.

@@ -1,0 +1,22 @@
+{{extend 'layout.html'}}
+
+{{ # Write out recent patients (by dob) }}
+<div>
+
+{{ # Write out the patient record itself. }}
+    <table>
+        <th>Name</th>
+        <th>MRN</th>
+        <th>DOB</th>
+        <th>Action</th>        
+        {{ # Write out recent patients (by dob) }}
+         {{for patient in patients:}}       
+        <tr>
+            <td>{{=patient.lname}}</td>
+            <td>{{=patient.mrn}}</td>
+            <td>{{=patient.date_of_birth.strftime('%Y-%m-%d')}}</td>            
+            <td><a href="{{=URL('edit_patient', vars=dict(patient=patient.id))}}">edit</a></td>            
+        </tr>
+        {{pass}}
+    </table>    
+</div>
