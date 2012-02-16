@@ -24,8 +24,90 @@ def user(): return dict(form=auth())
 def download(): return response.download(request,db)
 def call(): return service()
 ### end requires
+
+
 def index():
     return dict()
+    
+# CRUD Test
+def crud_patient():
+    form = crud.create(db.patient, next=URL('index'), 
+                       message=T('record created'))
+    patients = crud.select(db.patient, fields=['mrn','lname'],
+                           headers={'patient.mrn':'mrn', 'patient.lname':'lname' })
+
+    return dict(form=form, patients=patients)
+    
+def crud_data():
+    return dict(form=crud())
+    
+def crud_manage():
+    #table=db[request.args(0)]
+    table = db['patient']    
+    form = crud.update(table,request.args(1))
+    table.id.represent = lambda id, row: \
+       A('edit:',id,_href=URL(args=(request.args(0),id)))
+    search, rows = crud.search(table)
+    return dict(form=form,search=search,rows=rows)
+    
+    
+def zzindex():
+    "Identify objects to calculate projected LOC"
+   
+
+    "Build a form manually"
+        
+    
+    form = FORM(TABLE(
+        TR(TD(
+            LABEL("Name", _for="name"), 
+        ), TD(
+            INPUT(_name="name", requires=IS_NOT_EMPTY(), ),
+        ), TD(
+            LABEL("based on", _for="function_name"),
+        ), TD(
+            SELECT([OPTION(obj['function_name']) for obj in [{'function_name': ''}] + sorted(session.objs, key=lambda k: k['function_name'])], 
+                   _name="function_name", 
+                   _onclick="ajax('%s', ['function_name'], ':eval');" % URL('get_loc_from_reuse_library')),
+        )),
+        
+        TR(TD(
+            LABEL("Relative size", _for="relative_size"),
+        ), TD(
+            SELECT([OPTION(siz) for siz in PSP_SIZES], 
+                   _name="relative_size", _id="ajax_size",
+                   _onclick="ajax('%s', ['relative_size'], ':eval');" % URL('get_loc_per_relative_size')),
+        ), TD(
+            LABEL("Category", _for="category"),
+        ), TD(
+            SELECT([OPTION(cat) for cat in PSP_CATEGORIES], _name="category"),
+        )),
+        
+        TR(TD(
+            LABEL("Projected LOC", _for="loc"),
+        ), TD(
+            INPUT(_name="loc", _id="ajax_loc", 
+                  _value=int(session.midpoints.get(PSP_SIZES[0])), 
+                  requires=IS_INT_IN_RANGE(0,1000),
+                  ),
+        ), TD(
+            INPUT(_type="submit"),
+        ), TD(
+            INPUT(_type="submit", _name="reset", _value="Reset"),
+            " ",
+            INPUT(_type="submit", _name="finish", _value="Finish"),
+            _style="text-align: justify;",
+        )),
+        ))
+    
+    if form.accepts(request.vars, session, keepvalues=True):
+        # store identified object in local object
+        session.objects[form.vars.name] = form.vars
+        
+    return {'form': form}
+
+
+
 
 def error():
     return dict()

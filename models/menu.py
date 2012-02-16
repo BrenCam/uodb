@@ -21,14 +21,20 @@ response.menu = [
     (T('Patients'), False, URL('default','list_patient'), [
         (T('Register'), False, URL('default','new'), []),        
         (T('Search'), False, URL('default','list_status'), []),
-        (T('Status'), False, URL('default','status'), []),
-        
+        (T('Status'), False, URL('default','status'), []),       
     ]),   
     (T('Reports'), False, URL('default','index'), [
         (T('Aggregate'), False, URL('default','custom_form'), []),        
         (T('Ajax Status'), False, URL('default','search'), []),
     ]),
+    
+    (T('PtCrud'), False, URL('ptcrud','index'), []),
+    
+    (T('CrudTest'), False, URL('default','crud_patient'), []),
+    (T('CrudManage'), False, URL('default','crud_manage'), [],
+    ),
     ]
-         
+    
+
     
         
